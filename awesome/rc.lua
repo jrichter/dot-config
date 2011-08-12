@@ -6,10 +6,13 @@ require("awful.rules")
 require("beautiful")
 -- Notification library
 require("naughty")
+-- Widget library
+require("vicious")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init("/home/justin/.config/awesome/theme.lua")
+-- beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "terminal"
@@ -82,11 +85,24 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 -- }}}
 
 -- {{{ Wibox
+--  Network usage widget
+  -- Initialize widget
+  netwidget = widget({ type = "textbox" })
+  -- Register widget
+  vicious.register(netwidget, vicious.widgets.net, '<span color="#CC9393">${wlan0 down_kb}</span> <span color="#7F9F7F">${wlan0 up_kb}</span>', 3)
+ dnicon = widget({ type = "imagebox" })
+ upicon = widget({ type = "imagebox" })
+ dnicon.image = image(beautiful.widget_net)
+ upicon.image = image(beautiful.widget_netup)
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({ align = "right" }," %a %d %b %y %I:%M %p " )
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
+
+-- Create a separator
+ separator = widget({ type = "textbox" })
+ separator.text  = " :: "
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -164,6 +180,7 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
+        separator, upicon, netwidget, dnicon,
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
