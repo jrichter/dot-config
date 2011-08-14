@@ -8,6 +8,8 @@ require("beautiful")
 require("naughty")
 -- Widget library
 require("vicious")
+require("scratch")
+require("revelation")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
@@ -29,7 +31,7 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    -- awful.layout.suit.floating,
+    awful.layout.suit.floating,
     -- awful.layout.suit.tile,
     awful.layout.suit.tile.left,
     -- awful.layout.suit.tile.bottom,
@@ -48,8 +50,8 @@ layouts =
  -- Define a tag table which will hold all screen tags.
  tags = {
    names  = { "www", "emacs", 3, 4, 5, 6, 7, 8, 9 },
-   layout = { layouts[5], layouts[5], layouts[1], layouts[1], layouts[1],
-              layouts[1], layouts[1], layouts[1], layouts[1]
+   layout = { layouts[6], layouts[6], layouts[2], layouts[2], layouts[2],
+              layouts[2], layouts[2], layouts[2], layouts[2]
  }}
  for s = 1, screen.count() do
      -- Each screen has its own tag table.
@@ -85,15 +87,26 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 -- }}}
 
 -- {{{ Wibox
---  Network usage widget
+--  {{{Network usage widget
   -- Initialize widget
   netwidget = widget({ type = "textbox" })
   -- Register widget
   vicious.register(netwidget, vicious.widgets.net, '<span color="#CC9393">${wlan0 down_kb}</span> <span color="#7F9F7F">${wlan0 up_kb}</span>', 3)
- dnicon = widget({ type = "imagebox" })
- upicon = widget({ type = "imagebox" })
- dnicon.image = image(beautiful.widget_net)
- upicon.image = image(beautiful.widget_netup)
+  dnicon = widget({ type = "imagebox" })
+  upicon = widget({ type = "imagebox" })
+  dnicon.image = image(beautiful.widget_net)
+  upicon.image = image(beautiful.widget_netup)
+  -- }}}
+-- {{{ Battery state
+baticon = widget({ type = "imagebox" })
+baticon.image = image(beautiful.widget_bat)
+-- Initialize widget
+batwidget = widget({ type = "textbox" })
+-- Register widget
+vicious.register(batwidget, vicious.widgets.bat, "$1$2%", 61, "BAT0")
+-- }}}
+
+
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({ align = "right" }," %a %d %b %y %I:%M %p " )
 
@@ -101,8 +114,8 @@ mytextclock = awful.widget.textclock({ align = "right" }," %a %d %b %y %I:%M %p 
 mysystray = widget({ type = "systray" })
 
 -- Create a separator
- separator = widget({ type = "textbox" })
- separator.text  = " :: "
+ separator = widget({ type = "imagebox" })
+ separator.image = image(beautiful.widget_sep)
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -181,6 +194,7 @@ for s = 1, screen.count() do
         mylayoutbox[s],
         mytextclock,
         separator, upicon, netwidget, dnicon,
+        separator, batwidget, baticon,
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
@@ -253,17 +267,24 @@ globalkeys = awful.util.table.join(
                   mypromptbox[mouse.screen].widget,
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
-              end)
+              end),
+
+    -- User
+    awful.key({ modkey }, "e",  revelation.revelation),
+    awful.key({ modkey }, "s",  function () scratch.pad.toggle() end),
+    awful.key({ modkey }, "t",  function () scratch.drop("terminal", "bottom") end),
+    awful.key({ modkey }, " ", function () scratch.drop("gmrun") end)
 )
 
 clientkeys = awful.util.table.join(
-    awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
-    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
-    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
-    awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
-    awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
-    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
+    awful.key({ modkey,           }, "d",      function (c) scratch.pad.set(c, 0.60, 0.60, true) end),
+    awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen      end),
+    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                             end),
+    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                         ),
+    awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster())     end),
+    awful.key({ modkey,           }, "o",      awful.client.movetoscreen                            ),
+    awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                           end),
+    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop                end),
     awful.key({ modkey,           }, "n",
         function (c)
             -- The client currently has the input focus, so it cannot be
@@ -276,6 +297,7 @@ clientkeys = awful.util.table.join(
             c.maximized_vertical   = not c.maximized_vertical
         end)
 )
+
 
 -- Compute the maximum number of digit we need, limited to 9
 keynumber = 0
@@ -375,4 +397,28 @@ end)
 
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+-- Autostart - run only on a certain screen and when its not currently running
+-- Not working quite right
+-- function run_once(prg,arg_string,pname,screen)
+--     if not prg then
+--         do return nil end
+--     end
+
+--     if not pname then
+--        pname = prg
+--     end
+
+--     if not arg_string then 
+--         awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. "' || (" .. prg .. ")",screen)
+--     else
+--         awful.util.spawn_with_shell("pgrep -f -u $USER -x '" .. pname .. "' || (" .. prg .. " " .. arg_string .. ")",screen)
+--     end
+-- end
+-- Examples
+-- run_once("xscreensaver","-no-splash")
+-- run_once("pidgin",nil,nil,2)
+-- run_once("wicd-client",nil,"/usr/bin/python2 -O /usr/share/wicd/gtk/wicd-client.py")
+-- run_once("chromium")
+
 -- }}}

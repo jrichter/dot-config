@@ -37,7 +37,7 @@ theme.taglist_squares_sel   = "/home/justin/.config/awesome/icons/taglist/sel.pn
 -- theme.taglist_squares_unsel = "/usr/share/awesome/themes/default/taglist/squarew.png"
 theme.taglist_squares_unsel = "/home/justin/.config/awesome/icons/taglist/unsel.png"
 
-theme.tasklist_floating_icon = "/home/justin/.config/awesome/icons/tasklist/floatingw.png"
+theme.tasklist_floating_icon = "/home/justin/.config/awesome/icons/layouts/floating.png"
 
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
@@ -53,6 +53,8 @@ theme.menu_width  = "100"
 
 theme.widget_net = "/home/justin/.config/awesome/icons/down.png"
 theme.widget_netup = "/home/justin/.config/awesome/icons/up.png"
+theme.widget_bat = "/home/justin/.config/awesome/icons/bat.png"
+theme.widget_sep = "/home/justin/.config/awesome/icons/separator.png"
 
 -- Define the image to load
 theme.titlebar_close_button_normal = "/home/justin/.config/awesome/icons/titlebar/close_normal.png"
