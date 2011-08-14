@@ -271,6 +271,7 @@ globalkeys = awful.util.table.join(
 
     -- User
     awful.key({ modkey }, "e",  revelation.revelation),
+    awful.key({ modkey }, "i",  function () scratch.drop("terminal -e ripl", "left") end),
     awful.key({ modkey }, "s",  function () scratch.pad.toggle() end),
     awful.key({ modkey }, "t",  function () scratch.drop("terminal", "bottom") end),
     awful.key({ modkey }, "F1",  function () scratch.drop("conky","right","top" ) end)
