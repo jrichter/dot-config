@@ -3,7 +3,7 @@
 # GPL v2.0 applies
 
 # Set terminal
-Terminal = urxvt
+Terminal = terminal
 TermExec = ${Terminal} -e
 AlwaysInTerm = ssh telnet ftp lynx mc vi vim pine centericq perldoc man
 
@@ -32,19 +32,20 @@ TabTimeout = 0
 #   - %u gets replaced with the whole URL ("http://www.google.com")
 #   - %s gets replaced with "//www.google.com".  This is useful for URL-s
 #     like "man:printf" --> %s will get replaced with "printf"
-URL_http = firefox %u
-URL_mailto = firefox -remote "mailto(%s)"
+URL_http = chromium %u
+URL_g = chromium 'http://www.google.com/search?q=%s'
+URL_mailto = chromium -remote "mailto(%s)"
 URL_man = ${TermExec} 'man %s'
 URL_info = ${TermExec} 'info %s'
 URL_pd = ${TermExec} 'perldoc %s'
-URL_file = pcmanfm %s
+URL_file = thunar %s
 URL_readme = ${TermExec} 'less /usr/doc/%s/README'
 URL_info = ${TermExec} 'info %s'
 URL_sh = sh -c '%s'
 
 # extension handlers
 EXT:doc,rtf = AbiWord %s
-EXT:txt,cc,cpp,h,java,html,htm,epl,tex,latex,js,css,xml,xsl,am,php,css,js,py = gedit %s
+EXT:txt,cc,cpp,h,java,html,htm,epl,tex,latex,js,css,xml,xsl,am,php,css,js,py = emacs %s
 EXT:mpeg,mpg,avi,mkv,flv = vlc %s
 EXT:ps = gv %s
 EXT:pdf = epdfview %s

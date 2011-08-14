@@ -49,7 +49,7 @@ layouts =
  -- {{{ Tags
  -- Define a tag table which will hold all screen tags.
  tags = {
-   names  = { "www", "emacs", 3, 4, 5, 6, 7, 8, 9 },
+   names  = { 1, 2, 3, 4, 5, 6, 7, 8, 9 },
    layout = { layouts[6], layouts[6], layouts[2], layouts[2], layouts[2],
               layouts[2], layouts[2], layouts[2], layouts[2]
  }}
@@ -273,7 +273,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "e",  revelation.revelation),
     awful.key({ modkey }, "s",  function () scratch.pad.toggle() end),
     awful.key({ modkey }, "t",  function () scratch.drop("terminal", "bottom") end),
-    awful.key({ modkey }, " ", function () scratch.drop("gmrun") end)
+    awful.key({ modkey }, "F1",  function () scratch.drop("conky","right","top" ) end)
 )
 
 clientkeys = awful.util.table.join(
