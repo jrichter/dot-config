@@ -5,3 +5,6 @@ require 'ripl/color_streams'
 require 'ripl/commands'
 require 'ripl/short_errors'
 require 'ripl/auto_indent'
+
+Ripl.config[:color_streams_stdout] = :light_gray
+Ripl.config[:color_streams_stderr] = :red

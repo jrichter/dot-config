@@ -271,7 +271,8 @@ globalkeys = awful.util.table.join(
 
     -- User
     awful.key({ modkey }, "e",  revelation.revelation),
-    awful.key({ modkey }, "i",  function () scratch.drop("terminal -e ripl", "left") end),
+    awful.key({ modkey }, "i",  function () scratch.drop("xchat", "top", "center", .75, .75) end),
+    awful.key({ modkey }, "y",  function () scratch.drop("terminal -x bash -c 'source ~/.rvm/scripts/rvm ;ripl'", "center", "left", .5, .75) end),
     awful.key({ modkey }, "s",  function () scratch.pad.toggle() end),
     awful.key({ modkey }, "t",  function () scratch.drop("terminal", "bottom") end),
     awful.key({ modkey }, "F1",  function () scratch.drop("conky","right","top" ) end)
@@ -285,7 +286,7 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster())     end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                            ),
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                           end),
-    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop                end),
+    awful.key({ modkey, "Shift"   }, "t",      function (c) c.ontop = not c.ontop                end),
     awful.key({ modkey,           }, "n",
         function (c)
             -- The client currently has the input focus, so it cannot be
