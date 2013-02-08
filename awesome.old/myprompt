@@ -1,0 +1,15 @@
+#!/usr/bin/expect -f
+
+# Get a Bash shell
+spawn -noecho bash
+
+# Wait for a prompt
+expect "$ "
+
+# Type something
+send "Here is a message"
+
+# Hand over control to the user
+interact
+
+exit

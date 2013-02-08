@@ -83,6 +83,7 @@ theme.titlebar_maximized_button_focus_active  = "/home/justin/.config/awesome/ic
 -- You can use your own command to set your wallpaper
 theme.wallpaper_cmd = { "awsetbg /usr/share/awesome/themes/default/background.png" }
 
+
 -- You can use your own layout icons like this:
 theme.layout_fairh = "/home/justin/.config/awesome/icons/layouts/fairh.png"
 theme.layout_fairv = "/home/justin/.config/awesome/icons/layouts/fairv.png"
